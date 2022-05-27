@@ -16,31 +16,41 @@ const Playlist=()=>{
         
         fetch('https://matchilling-chuck-norris-jokes-v1.p.rapidapi.com/jokes/random', options)
             .then(data => data.json())
-            .then(data => setJoke(data.value))
+            .then(data => setJokes([...jokes,data]))
             .then(data=> setIsLoading(false))
             .catch(err => console.error(err));        
 
-
+        console.log(jokes)
     }
-    const [joke,setJoke]=useState([])
+    const [jokes,setJokes]=useState([])
     const [isLoading,setIsLoading]=useState(true)
 
 
 
     useEffect(()=>{
-        getSong()
+        getSong();
     },[]);
 
-    if(isLoading){
+    if(jokes.length===0){
         return <p>Loading</p>
     }
     
 
 return( <div>
+<div>
+<button onClick={getSong} disabled={isLoading} className='joke-btn'>Load Joke</button>
+</div>
 
-{joke}
+{console.log(jokes)}
+<ul className="joke-list">
+{
 
-<button onClick={getSong}>Refresh</button>
+    jokes.map(joke=>{
+        return <li key={joke.id} className="joke-card">{joke.value}</li>
+    })
+}
+</ul>
+
 
 </div>
 );
